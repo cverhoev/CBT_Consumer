@@ -1,0 +1,34 @@
+2024-08-06T09:08:14.678+02:00  WARN 14780 --- [main] ory$DuplicateJsonObjectContextCustomizer : 
+
+Found multiple occurrences of org.json.JSONObject on the class path:
+
+	jar:file:/C:/Development/mavenrepo/com/vaadin/external/google/android-json/0.0.20131108.vaadin1/android-json-0.0.20131108.vaadin1.jar!/org/json/JSONObject.class
+	jar:file:/C:/Development/mavenrepo/org/json/json/20240205/json-20240205.jar!/org/json/JSONObject.class
+
+You may wish to exclude one of them to ensure predictable runtime behavior
+
+2024-08-06T09:08:14.739+02:00  INFO 14780 --- [main] c.rahulshettyacademy.PactConsumerTest1   : Starting PactConsumerTest1 using Java 17.0.6 with PID 14780 (started by CVERHOEV in C:\Development\workspaces\CBT\Code Projects\SpringBootRestService)
+2024-08-06T09:08:14.741+02:00  INFO 14780 --- [main] c.rahulshettyacademy.PactConsumerTest1   : No active profile set, falling back to 1 default profile: "default"
+2024-08-06T09:08:16.493+02:00  INFO 14780 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-08-06T09:08:16.685+02:00  INFO 14780 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 166 ms. Found 1 JPA repository interface.
+2024-08-06T09:08:17.828+02:00  INFO 14780 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2024-08-06T09:08:17.846+02:00  WARN 14780 --- [main] c.zaxxer.hikari.util.DriverDataSource    : Registered driver with driverClassName=com.mysql.jdbc.Driver was not found, trying direct instantiation.
+2024-08-06T09:08:19.622+02:00  INFO 14780 --- [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@2eda2062
+2024-08-06T09:08:19.630+02:00  INFO 14780 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2024-08-06T09:08:19.952+02:00  INFO 14780 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-08-06T09:08:20.271+02:00  INFO 14780 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.5.2.Final
+2024-08-06T09:08:20.457+02:00  INFO 14780 --- [main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2024-08-06T09:08:21.746+02:00  INFO 14780 --- [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-08-06T09:08:24.086+02:00  INFO 14780 --- [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-08-06T09:08:24.229+02:00  INFO 14780 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-08-06T09:08:25.452+02:00  WARN 14780 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-08-06T09:08:27.321+02:00  INFO 14780 --- [main] c.rahulshettyacademy.PactConsumerTest1   : Started PactConsumerTest1 in 13.465 seconds (process running for 18.144)
+2024-08-06T09:08:30.516+02:00  WARN 14780 --- [Thread-2] au.com.dius.pact.core.support.Metrics    : 
+            Please note: we are tracking events anonymously to gather important usage statistics like JVM version
+            and operating system. To disable tracking, set the 'pact_do_not_track' system property or environment
+            variable to 'true'.
+            
+2024-08-06T09:08:31.578+02:00  INFO 14780 --- [main] .c.d.p.c.j.PactConsumerTestExt$Companion : Writing pacts out to default directory
+2024-08-06T09:08:32.993+02:00  INFO 14780 --- [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-08-06T09:08:33.000+02:00  INFO 14780 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2024-08-06T09:08:33.023+02:00  INFO 14780 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
