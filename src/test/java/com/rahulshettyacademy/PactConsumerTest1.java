@@ -2,8 +2,11 @@ package com.rahulshettyacademy;
 
 import au.com.dius.pact.core.model.V4Pact;
 import au.com.dius.pact.core.model.annotations.PactDirectory;
+import com.rahulshettyacademy.repository.LibraryRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -22,6 +25,7 @@ import au.com.dius.pact.consumer.junit5.PactConsumerTestExt;
 import au.com.dius.pact.consumer.junit5.PactTestFor;
 import au.com.dius.pact.core.model.PactSpecVersion;
 import au.com.dius.pact.core.model.annotations.Pact;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -37,6 +41,14 @@ public class PactConsumerTest1 {
 	//create object for librarycontroller class for whom unit test case is to be written
 	@Autowired
 	private LibraryController libraryController;
+
+	@MockBean
+	LibraryRepository libraryRepository;
+
+	@BeforeEach
+	public void setup() {
+		MockitoAnnotations.openMocks(this);
+	}
 	
 	//mentioning who is the consumer
 	@Pact(consumer="BooksCatalogue")
