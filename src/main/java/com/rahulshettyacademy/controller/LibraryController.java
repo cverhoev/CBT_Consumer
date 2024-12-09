@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -100,7 +102,7 @@ public class LibraryController {
 
     @PutMapping("/updateBook/{id}")
     public ResponseEntity<Library> updateBook(@PathVariable(value = "id") String id, @RequestBody Library library) {
-		//	Library existingBook = repository.findById(id).get();//mock
+        //	Library existingBook = repository.findById(id).get();//mock
         Library existingBook = libraryService.getBookById(id);
 
         existingBook.setAisle(library.getAisle());//mock
@@ -113,7 +115,7 @@ public class LibraryController {
 
     @DeleteMapping("/deleteBook")
     public ResponseEntity<String> deleteBookById(@RequestBody Library library) {
-		//	Library libdelete =repository.findById(library.getId()).get();
+        //	Library libdelete =repository.findById(library.getId()).get();
         Library libdelete = libraryService.getBookById(library.getId());//mock
         repository.delete(libdelete);
 
@@ -133,25 +135,29 @@ public class LibraryController {
     public SpecificProduct getProductFullDetails(@PathVariable(value = "name") String name) throws JsonMappingException, JsonProcessingException {
 
         SpecificProduct specificProduct = new SpecificProduct();
-        TestRestTemplate restTemplate = new TestRestTemplate();
+
         Library lib = repository.findByBookName(name);
         specificProduct.setProduct(lib);
-        ResponseEntity<String> response = restTemplate.getForEntity(baseUrl + "/getCourseByName/" + name, String.class);
-        if (response.getStatusCode().is4xxClientError()) {
-            specificProduct.setMsg(name + "Category and price details are not available at this time");
-        } else {
+
+        try {
+            RestTemplate restTemplate = new RestTemplate();
+
+            ResponseEntity<String> response = restTemplate.getForEntity(baseUrl + "/getCourseByName/" + name, String.class);
             ObjectMapper mapper = new ObjectMapper();
 
             AllCourseDetails allCourseDetails = mapper.readValue(response.getBody(), AllCourseDetails.class);
 
-
             specificProduct.setCategory(allCourseDetails.getCategory());
             specificProduct.setPrice(allCourseDetails.getPrice());
 
+        } catch (HttpClientErrorException e) {
+            System.out.println("client exc: " + e.getMessage());
+            if (e.getStatusCode().is4xxClientError()) {
+                specificProduct.setMsg(name + "Category and price details are not available at this time");
+            }
         }
+
         return specificProduct;
-
-
     }
 
     //in the below unit test, we will be adding pact test , we will replace the call to the actual server by pact server
@@ -177,7 +183,7 @@ public class LibraryController {
 
     public AllCourseDetails[] getAllCoursesDetails() throws JsonMappingException, JsonProcessingException {
 
-        TestRestTemplate restTemplate = new TestRestTemplate();
+        RestTemplate restTemplate = new RestTemplate();
 
         ResponseEntity<String> response = restTemplate.getForEntity(baseUrl + "/allCourseDetails", String.class);
         ObjectMapper mapper = new ObjectMapper();
