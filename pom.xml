@@ -9,9 +9,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.rahulshettyacademy</groupId>
-    <artifactId>SpringBootRestService</artifactId>
+    <artifactId>LibraryRestService</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>SpringBootRestService</name>
+    <name>LibraryRestService</name>
     <description>Demo project for Spring Boot</description>
 
     <properties>

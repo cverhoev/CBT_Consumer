@@ -5,7 +5,6 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -57,9 +56,9 @@ public class LibraryController {
     private static final Logger logger = LoggerFactory.getLogger(LibraryController.class);
 
     @PostMapping("/addBook")
-    public ResponseEntity addBookImplementation(@RequestBody Library library) {
+    public ResponseEntity addBook(@RequestBody Library library) {
         String id = libraryService.buildId(library.getIsbn(), library.getAisle());//dependenyMock
-        AddResponse ad = new AddResponse();
+        AddResponse addResponse = new AddResponse();
 
         if (!libraryService.checkBookAlreadyExist(id))//mock
         {
@@ -69,18 +68,16 @@ public class LibraryController {
             HttpHeaders headers = new HttpHeaders();
             headers.add("unique", id);
 
-            ad.setMsg("Success Book is Added");
-            ad.setId(id);
-            //return ad;
-            return new ResponseEntity<AddResponse>(ad, headers, HttpStatus.CREATED);
+            addResponse.setMsg("Success Book is Added");
+            addResponse.setId(id);
+            //return addResponse;
+            return new ResponseEntity<AddResponse>(addResponse, headers, HttpStatus.CREATED);
         } else {
             logger.info("Book  exist so skipping creation");
-            ad.setMsg("Book already exist");
-            ad.setId(id);
-            return new ResponseEntity<AddResponse>(ad, HttpStatus.ACCEPTED);
+            addResponse.setMsg("Book already exist");
+            addResponse.setId(id);
+            return new ResponseEntity<AddResponse>(addResponse, HttpStatus.ACCEPTED);
         }
-        //write the code to tell book already exist
-
     }
 
     @CrossOrigin
@@ -126,7 +123,6 @@ public class LibraryController {
 
     @GetMapping("/getBooks")
     public Iterable<Library> getBooks() {
-//    public List<Library> getBooks() {
         return repository.findAll();
     }
 
@@ -140,6 +136,7 @@ public class LibraryController {
         specificProduct.setProduct(lib);
 
         try {
+            //Call Courses API
             RestTemplate restTemplate = new RestTemplate();
 
             ResponseEntity<String> response = restTemplate.getForEntity(baseUrl + "/getCourseByName/" + name, String.class);
@@ -147,6 +144,7 @@ public class LibraryController {
 
             AllCourseDetails allCourseDetails = mapper.readValue(response.getBody(), AllCourseDetails.class);
 
+            //retrieve category and price from courses API
             specificProduct.setCategory(allCourseDetails.getCategory());
             specificProduct.setPrice(allCourseDetails.getPrice());
 
@@ -160,13 +158,12 @@ public class LibraryController {
         return specificProduct;
     }
 
-    //in the below unit test, we will be adding pact test , we will replace the call to the actual server by pact server
     @CrossOrigin
     @GetMapping("/getProductPrices")
     public ProductsPrices getProductPrices() throws JsonMappingException, JsonProcessingException {
         productPrices.setBooksPrice(250);
 
-
+        //Call Courses API to fetch all courses and extract their prices and calculate total sum of prices
         long sum = 0;
         for (int i = 0; i < getAllCoursesDetails().length; i++) {
             sum = sum + getAllCoursesDetails()[i].getPrice();
@@ -182,7 +179,7 @@ public class LibraryController {
     }
 
     public AllCourseDetails[] getAllCoursesDetails() throws JsonMappingException, JsonProcessingException {
-
+        //Call Courses API
         RestTemplate restTemplate = new RestTemplate();
 
         ResponseEntity<String> response = restTemplate.getForEntity(baseUrl + "/allCourseDetails", String.class);
