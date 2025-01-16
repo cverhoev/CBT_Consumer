@@ -1,11 +1,13 @@
 package com.rahulshettyacademy;
 
 import au.com.dius.pact.consumer.junit5.PactConsumerTest;
+import au.com.dius.pact.consumer.junit5.PactConsumerTestExt;
 import au.com.dius.pact.core.model.V4Pact;
 import com.rahulshettyacademy.controller.Book;
 import com.rahulshettyacademy.repository.LibraryRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,7 +23,7 @@ import au.com.dius.pact.consumer.dsl.PactDslWithProvider;
 import au.com.dius.pact.consumer.junit5.PactTestFor;
 import au.com.dius.pact.core.model.PactSpecVersion;
 import au.com.dius.pact.core.model.annotations.Pact;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -37,7 +39,7 @@ public class PactLibraryConsumerTest {
 	LibraryController libraryController;
 
 	//mocking the library repository, because mysql database is not available for this test
-	@MockBean
+	@MockitoBean
 	LibraryRepository libraryRepository;
 
 	@BeforeEach
