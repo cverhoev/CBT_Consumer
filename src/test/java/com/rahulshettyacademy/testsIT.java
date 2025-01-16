@@ -1,19 +1,6 @@
 package com.rahulshettyacademy;
 
-import org.json.JSONException;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.Assertions;
-
-import org.skyscreamer.jsonassert.JSONAssert;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-
-import com.rahulshettyacademy.controller.Library;
 
 
 @SpringBootTest
@@ -56,21 +43,21 @@ public class testsIT {
 //		HttpHeaders headers = new HttpHeaders();
 //		headers.setContentType(MediaType.APPLICATION_JSON);
 //
-//		HttpEntity<Library> request = new HttpEntity<Library>(buildLibrary(),headers);
+//		HttpEntity<Book> request = new HttpEntity<Book>(buildBook(),headers);
 //		ResponseEntity<String>	response =	restTemplate.postForEntity("http://localhost:8080/addBook", request, String.class);
 //		Assertions.assertEquals(HttpStatus.CREATED, response.getStatusCode());
 //		Assertions.assertEquals(buildLibrary().getId(),response.getHeaders().get("unique").get(0));
 //	}
 //
-//	public Library buildLibrary()
+//	public Book buildBook()
 //	{
-//		Library lib =new Library();
-//		lib.setAisle(322);
-//		lib.setBookName("Spring");
-//		lib.setIsbn("sfes");
-//		lib.setAuthor("Rahul Shetty");
-//		lib.setId("sfes322");
-//		return lib;
+//		Book book =new Book();
+//		book.setAisle(322);
+//		book.setBookName("Spring");
+//		book.setIsbn("sfes");
+//		book.setAuthor("Rahul Shetty");
+//		book.setId("sfes322");
+//		return book;
 //
 //	}
 //

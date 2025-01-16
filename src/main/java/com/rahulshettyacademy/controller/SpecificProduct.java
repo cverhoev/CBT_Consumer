@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 public class SpecificProduct {
 
 	
-	Library product;
+	Book product;
 	@JsonInclude(Include.NON_NULL)
 	String msg;
 	
@@ -19,10 +19,10 @@ public class SpecificProduct {
 	public void setMsg(String msg) {
 		this.msg = msg;
 	}
-	public Library getProduct() {
+	public Book getProduct() {
 		return product;
 	}
-	public void setProduct(Library product) {
+	public void setProduct(Book product) {
 		this.product = product;
 	}
 	public int getPrice() {

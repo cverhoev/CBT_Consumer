@@ -1,27 +1,23 @@
 package com.rahulshettyacademy;
 
+import au.com.dius.pact.consumer.junit5.PactConsumerTest;
 import au.com.dius.pact.core.model.V4Pact;
-import com.rahulshettyacademy.controller.Library;
+import com.rahulshettyacademy.controller.Book;
 import com.rahulshettyacademy.repository.LibraryRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rahulshettyacademy.controller.LibraryController;
-import com.rahulshettyacademy.controller.ProductsPrices;
-import com.rahulshettyacademy.controller.SpecificProduct;
 
 import au.com.dius.pact.consumer.MockServer;
 import au.com.dius.pact.consumer.dsl.PactDslJsonArray;
 import au.com.dius.pact.consumer.dsl.PactDslJsonBody;
 import au.com.dius.pact.consumer.dsl.PactDslWithProvider;
-import au.com.dius.pact.consumer.junit5.PactConsumerTestExt;
 import au.com.dius.pact.consumer.junit5.PactTestFor;
 import au.com.dius.pact.core.model.PactSpecVersion;
 import au.com.dius.pact.core.model.annotations.Pact;
@@ -31,19 +27,16 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-//to identify unit test case in springboot
-@SpringBootTest()
-//extending the properties of springboot with pact contract test class
-@ExtendWith(PactConsumerTestExt.class)
-// name of provider where the test has to be run, it can be anything to identify provider
-@PactTestFor(providerName = "CoursesCatalogue")
-//@PactDirectory("/target/pacts")
-public class PactConsumerTest {
+@SpringBootTest() //to identify unit test case in springboot
+@PactConsumerTest //to identify the class as pact consumer test
+@PactTestFor(providerName = "CoursesCatalogue") // name of provider where the test has to be run, it can be anything to identify provider
+public class PactLibraryConsumerTest {
 	
 	//create object for librarycontroller class for whom unit test case is to be written
 	@Autowired
-	private LibraryController libraryController;
+	LibraryController libraryController;
 
+	//mocking the library repository, because mysql database is not available for this test
 	@MockBean
 	LibraryRepository libraryRepository;
 
@@ -52,8 +45,8 @@ public class PactConsumerTest {
 		MockitoAnnotations.openMocks(this);
 	}
 	
-	//mentioning who is the consumer
-	@Pact(consumer="BooksCatalogue")
+
+	@Pact(consumer="BooksCatalogue") //mentioning who is the consumer
 	//Pact server configuration details - mocking the real call to course microservice
 	public V4Pact PactAllCoursesDetailsConfig(PactDslWithProvider builder)
 	{
@@ -95,32 +88,32 @@ public class PactConsumerTest {
 		.status(404)
 		.toPact(V4Pact.class);
 	}
-	
+
+	//the test will be executed as per the behavior defined in the pact configuration defined above
+	//in the below unit test, we will be adding pact test, we will replace the call to the actual server by pact server
 	@Test
-	//the test will be executed as per the behavior defined in the configuration defined above
-	//in the below unit test, we will be adding pact test , we will replace the call to the actual server by pact server
 	@PactTestFor(pactVersion = PactSpecVersion.V4,pactMethod="PactAllCoursesDetailsConfig")
-	public void testAllProductsSum(MockServer mockServer) throws JsonMappingException, JsonProcessingException
+	public void testAllProductsSum(MockServer mockServer) throws JsonProcessingException
 	{
 		//expected response based on mocked response as defined above
-		String expectedJson = """
+		var expectedJson = """
 				{"booksPrice":250,"coursesPrice":20}""";
 		//baseUrl of pact server is provided so that instead of real provider url, the mockServer url is hit
 		libraryController.setBaseUrl(mockServer.getUrl());
 		//the actual response after calling getProductPrices method
-		ProductsPrices productsPrices = libraryController.getProductPrices();
+		var productsPrices = libraryController.getProductPrices();
 		//converting the response into json string
-		ObjectMapper obj = new ObjectMapper();
-		String jsonActual = obj.writeValueAsString(productsPrices);
+		var obj = new ObjectMapper();
+		var jsonActual = obj.writeValueAsString(productsPrices);
 		//comparing the response of productprices method with expected response
 		assertEquals(expectedJson, jsonActual);
 	}
 
 	@Test
 	@PactTestFor(pactVersion = PactSpecVersion.V4,pactMethod="PactGetCourseByName")
-	public void testByProductName(MockServer mockServer) throws JsonMappingException, JsonProcessingException
+	public void testByProductName(MockServer mockServer) throws JsonProcessingException
 	{
-		Library book = new Library();
+		var book = new Book();
 		book.setBookName("Appium");
 		book.setAisle(36);
 		book.setId("ttefs36");
@@ -132,23 +125,23 @@ public class PactConsumerTest {
 		//baseUrl of pact server is provided so that instead of real provider url, the mckServer url is hit
 		libraryController.setBaseUrl(mockServer.getUrl());
 		//expected response
-		String expectedJson = """
+		var expectedJson = """
 				{"product":{"bookName":"Appium","id":"ttefs36","isbn":"ttefs","aisle":36,"author":"Shetty"},"price":44,"category":"mobile"}""";
 
 		//calling getproductfulldetails methods with appium value
-		SpecificProduct specificProduct =libraryController.getProductFullDetails("Appium");
+		var specificProduct =libraryController.getProductFullDetails("Appium");
 		//converting the response to json format
-		ObjectMapper obj = new ObjectMapper();
-		String jsonActual = obj.writeValueAsString(specificProduct);
+		var obj = new ObjectMapper();
+		var jsonActual = obj.writeValueAsString(specificProduct);
 		//comparing the response of appium method with expected response
 		assertEquals(expectedJson, jsonActual);
 	}
 
 	@Test
 	@PactTestFor(pactVersion = PactSpecVersion.V4,pactMethod="PactGetCourseByNameNotExists")
-	public void testByProductNameNotExists(MockServer mockServer) throws JsonMappingException, JsonProcessingException
+	public void testByProductNameNotExists(MockServer mockServer) throws JsonProcessingException
 	{
-		Library book = new Library();
+		var book = new Book();
 		book.setBookName("Playwright");
 		book.setAisle(37);
 		book.setId("ttefs37");
@@ -160,14 +153,14 @@ public class PactConsumerTest {
 		//baseUrl of pact server is provided so that instead of real provider url, the mckServer url is hit
 		libraryController.setBaseUrl(mockServer.getUrl());
 		//expected response
-		String expectedJson = """
+		var expectedJson = """
 				{"product":{"bookName":"Playwright","id":"ttefs37","isbn":"ttefs","aisle":37,"author":"Microsoft"},"msg":"PlaywrightCategory and price details are not available at this time"}""";
 
-		//calling getproductfulldetails methods with appium value
-		SpecificProduct specificProduct =libraryController.getProductFullDetails("Playwright");
+		//calling getproductfulldetails methods with playwright value
+		var specificProduct = libraryController.getProductFullDetails("Playwright");
 		//converting the response to json format
-		ObjectMapper obj = new ObjectMapper();
-		String jsonActual = obj.writeValueAsString(specificProduct);
+		var objectMapper = new ObjectMapper();
+		var jsonActual = objectMapper.writeValueAsString(specificProduct);
 		//comparing the response of appium method with expected response
 		assertEquals(expectedJson, jsonActual);
 	}

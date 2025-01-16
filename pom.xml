@@ -77,10 +77,6 @@
                 <groupId>au.com.dius.pact.provider</groupId>
                 <artifactId>maven</artifactId>
                 <version>4.6.11</version>
-                <configuration>
-                    <pactBrokerUrl>https://sogetibv.pactflow.io/</pactBrokerUrl>
-                    <pactBrokerToken>xaErE_iYPPQZRlQttHRIBg</pactBrokerToken>
-                </configuration>
             </plugin>
 
             <plugin>
