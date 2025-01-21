@@ -151,7 +151,7 @@ public class LibraryController {
         } catch (HttpClientErrorException e) {
             System.out.println("client exc: " + e.getMessage());
             if (e.getStatusCode().is4xxClientError()) {
-                specificProduct.setMsg(name + "Category and price details are not available at this time");
+                specificProduct.setMsg(name + " Category and price details are not available at this time");
             }
         }
 

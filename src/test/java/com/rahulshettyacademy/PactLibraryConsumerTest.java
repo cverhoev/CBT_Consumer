@@ -131,7 +131,7 @@ public class PactLibraryConsumerTest {
 				{"product":{"bookName":"Appium","id":"ttefs36","isbn":"ttefs","aisle":36,"author":"Shetty"},"price":44,"category":"mobile"}""";
 
 		//calling getproductfulldetails methods with appium value
-		var specificProduct =libraryController.getProductFullDetails("Appium");
+		var specificProduct = libraryController.getProductFullDetails("Appium");
 		//converting the response to json format
 		var obj = new ObjectMapper();
 		var jsonActual = obj.writeValueAsString(specificProduct);
@@ -156,7 +156,7 @@ public class PactLibraryConsumerTest {
 		libraryController.setBaseUrl(mockServer.getUrl());
 		//expected response
 		var expectedJson = """
-				{"product":{"bookName":"Playwright","id":"ttefs37","isbn":"ttefs","aisle":37,"author":"Microsoft"},"msg":"PlaywrightCategory and price details are not available at this time"}""";
+				{"product":{"bookName":"Playwright","id":"ttefs37","isbn":"ttefs","aisle":37,"author":"Microsoft"},"msg":"Playwright Category and price details are not available at this time"}""";
 
 		//calling getproductfulldetails methods with playwright value
 		var specificProduct = libraryController.getProductFullDetails("Playwright");
